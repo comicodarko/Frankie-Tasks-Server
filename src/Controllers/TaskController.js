@@ -27,7 +27,8 @@ module.exports = {
   },
 
   async put(req, res) {
-    const { id, checked } = req.body;
+    const { id } = req.params;
+    const { checked } = req.body;
     Task.findByIdAndUpdate(id, {
       checked, 
       checkedDate: checked ? new Date() : null

@@ -8,7 +8,7 @@ const routes = Router();
 
 routes.get('/tasks', TaskController.get);
 routes.post('/tasks', TaskController.post);
-routes.put('/tasks', TaskController.put);
+routes.put('/tasks/:id', TaskController.put);
 
 routes.get('/categoryIcons', CategoryController.getIcons);
 routes.get('/categories', CategoryController.get);
