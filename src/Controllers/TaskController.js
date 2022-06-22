@@ -18,8 +18,8 @@ module.exports = {
       date: new Date(), 
       checked: false,
       checkedDate: null
-    }).then(() => {
-      res.json({ message: 'Task criada com sucesso!' });
+    }).then((data) => {
+      res.json({ message: 'Task criada com sucesso!', data });
     }).catch(err => {
       res.status(500);
       res.json({ message: `${err}` });
