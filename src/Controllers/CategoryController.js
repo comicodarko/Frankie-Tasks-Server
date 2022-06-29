@@ -30,9 +30,12 @@ module.exports = {
     const exist = await Category.findOne({ label });
 
     if(!exist) {
-      Category.create({ label, iconPath }).then(() => {
+      Category.create({ label, iconPath }).then((newCategory) => {
         res.status(201);
-        res.json({ message: 'Criado com sucesso.' });
+        res.json({ 
+          message: 'Criado com sucesso.', 
+          newCategory
+        });
       }).catch(err => {
         res.status(500);
         res.json({ message: `${err}` });
