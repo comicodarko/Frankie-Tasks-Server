@@ -1,5 +1,14 @@
 const rssParser = require('rss-parser');
-const rss = new rssParser();
+const rss = new rssParser({
+  customFields: {
+    item: [
+      ['letterboxd:filmTitle', 'filmTitle'],
+      ['letterboxd:filmYear', 'filmYear'],
+      ['letterboxd:memberRating', 'rate'],
+      ['letterboxd:filmTitle', 'filmTitle'],
+    ]
+  }
+});
 
 module.exports = {
   async getDiary(req, res) {
@@ -10,8 +19,10 @@ module.exports = {
           item.content.indexOf('<img src="') + 10, 
           item.content.indexOf('"/>'));
         movies.push({
-          title: item.title,
+          title: item.filmTitle,
           review: item.contentSnippet,
+          rate: item.rate,
+          year: item.filmYear,
           poster
         });
       });
@@ -22,7 +33,6 @@ module.exports = {
         : res.status(500);
       res.json({ message: err.message });
     });
-
   }
 }
 
