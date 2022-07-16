@@ -11,13 +11,16 @@ module.exports = {
   },
 
   async post(req, res) {
-    const { label, category } = req.body;
+    const { label, category, dates } = req.body;
     Task.create({
       label, 
       category,
-      date: new Date(), 
+      dates: {
+        initial: dates.initial ? dates.initial : new Date(),
+        checked: null,
+        final: dates.final ? dates.final : null
+      },
       checked: false,
-      checkedDate: null
     }).then((data) => {
       res.json({ message: 'Task criada com sucesso!', data });
     }).catch(err => {
@@ -29,14 +32,18 @@ module.exports = {
   async put(req, res) {
     const { id } = req.params;
     const { checked } = req.body;
-    Task.findByIdAndUpdate(id, {
-      checked, 
-      checkedDate: checked ? new Date() : null
-    }).then(() => {
-      res.json({ message: 'Task editada com sucesso!' });
+    Task.findById(id).then(doc => {
+      if(doc) {
+        doc.checked = checked,
+        doc.dates.checked = checked ? new Date() : null
+        doc.save(() => res.json({ message: 'Task editada com sucesso!' }));
+      } else {
+        res.status(404);
+        res.json({ message: 'Task não encontrada!'});
+      }
     }).catch(err => {
       res.status(500);
-      res.json({ message: `${err}` });
+      res.json({ error: err });
     })
   }
 }

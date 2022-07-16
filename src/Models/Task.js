@@ -7,8 +7,11 @@ const TaskSchema = new mongoose.Schema({
     iconPath: String,  
   },
   checked: Boolean,
-  date: Date,
-  checkedDate: Date
+  dates: {
+    initial: Date,
+    checked: Date,
+    final: Date,
+  },
 })
 
 module.exports = mongoose.model('Tasks', TaskSchema);
