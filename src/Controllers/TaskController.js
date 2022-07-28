@@ -16,7 +16,7 @@ module.exports = {
       label, 
       category,
       dates: {
-        initial: dates.initial ? dates.initial : new Date(),
+        initial: dates.initial ? dates.initial : new Date().toISOString.substring(0, 10),
         checked: null,
         final: dates.final ? dates.final : null
       },
@@ -35,7 +35,7 @@ module.exports = {
     Task.findById(id).then(doc => {
       if(doc) {
         doc.checked = checked,
-        doc.dates.checked = checked ? new Date() : null
+        doc.dates.checked = checked ? new Date().toISOString.substring(0, 10) : null
         doc.save(() => res.json({ message: 'Task editada com sucesso!' }));
       } else {
         res.status(404);
