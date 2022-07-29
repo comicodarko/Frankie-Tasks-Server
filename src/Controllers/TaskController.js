@@ -16,7 +16,7 @@ module.exports = {
       label, 
       category,
       dates: {
-        initial: dates.initial ? dates.initial : new Date().toISOString.substring(0, 10),
+        initial: dates.initial ? dates.initial : new Date().toISOString().substring(0, 10),
         checked: null,
         final: dates.final ? dates.final : null
       },
@@ -35,7 +35,7 @@ module.exports = {
     Task.findById(id).then(doc => {
       if(doc) {
         doc.checked = checked,
-        doc.dates.checked = checked ? new Date().toISOString.substring(0, 10) : null
+        doc.dates.checked = checked ? new Date().toISOString().substring(0, 10) : null
         doc.save(() => res.json({ message: 'Task editada com sucesso!' }));
       } else {
         res.status(404);
@@ -45,5 +45,20 @@ module.exports = {
       res.status(500);
       res.json({ error: err });
     })
+  },
+
+  async delete(req, res) {
+    const { id } = req.params;
+    Task.findByIdAndDelete(id).then((deleted) => {
+      if(deleted) {
+        res.json({ message: 'Task Deletada com sucesso!' });
+      } else {
+        res.status(404);
+        res.json({ message: 'Task não encontrada' });
+      }
+    }).catch(error => {
+      res.status(500);
+      res.json({ message: `${error}` });
+    });
   }
 }

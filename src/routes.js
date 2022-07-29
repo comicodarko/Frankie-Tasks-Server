@@ -10,6 +10,7 @@ const routes = Router();
 routes.get('/tasks', TaskController.get);
 routes.post('/tasks', TaskController.post);
 routes.put('/tasks/:id', TaskController.put);
+routes.delete('/tasks/:id', TaskController.delete);
 
 routes.get('/categoryIcons', CategoryController.getIcons);
 routes.get('/categories', CategoryController.get);
