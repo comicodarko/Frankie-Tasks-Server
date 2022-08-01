@@ -7,7 +7,7 @@ module.exports = {
     fs.readdir(__dirname + '/../public/categories' , (err, files) => {
       if(err) {
         res.status(500);
-        console.log(err)
+        res.json({ message: `${err}` });
       } else {
         const iconPaths = files.map(file => `/public/categories/${file}`);
         res.json(iconPaths);

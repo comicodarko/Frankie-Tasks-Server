@@ -12,13 +12,21 @@ module.exports = {
 
   async post(req, res) {
     const { label, category, dates } = req.body;
+    const datesArray = {
+      initial: dates.initial.split('-'),
+      final: dates.final.split('-')
+    }
     Task.create({
       label, 
       category,
       dates: {
-        initial: dates.initial ? dates.initial : new Date().toISOString().substring(0, 10),
+        initial: dates.initial 
+          ? new Date(datesArray.initial[0], datesArray.initial[1] -1, datesArray.initial[2]) 
+          : new Date(),
         checked: null,
-        final: dates.final ? dates.final : null
+        final: dates.final 
+          ? new Date(datesArray.final[0], datesArray.final[1] -1, datesArray.final[2])
+          : ''
       },
       checked: false,
     }).then((data) => {
@@ -35,7 +43,7 @@ module.exports = {
     Task.findById(id).then(doc => {
       if(doc) {
         doc.checked = checked,
-        doc.dates.checked = checked ? new Date().toISOString().substring(0, 10) : null
+        doc.dates.checked = checked ? new Date() : ''
         doc.save(() => res.json({ message: 'Task editada com sucesso!' }));
       } else {
         res.status(404);
